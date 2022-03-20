@@ -1,6 +1,12 @@
 CPF Crud
 ==============================================
 
+### Sequencia para rodar o projeto
+-----
+* Rodar o comando dentro da pasta para iniciar o docker-compose
+* Rodar o comando que instala as dependências do composer
+* Rodar o comando que faz os presets do laravel
+
 <details>
     <summary>Se tiver o Make instalado use esses comandos para iniciar</summary>
 Start para subir o docker-compose
@@ -14,7 +20,10 @@ test para rodar os test de feature
     make test
 composer-i para instalar as dependências do composer
 
-    make test
+    make composer-i
+preset para fazer o preset do laravel
+
+    make preset
 </details>
 <details>
     <summary>Caso não tenha o Make use esses comandos</summary>
@@ -30,9 +39,12 @@ Rodar os test de feature
 Instalar as dependências do composer
 
     docker exec -it php-web composer install
+Faz os presets do Laravel
+
+    docker exec -it php-web cp .env.example .env && chmod -R 777 storage
 </details>
 
-API
+### API
 -----
 Todas as rotas então no uri `api/`.
 

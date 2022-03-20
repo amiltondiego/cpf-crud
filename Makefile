@@ -21,6 +21,9 @@ stop: 		##- Stop Docker
 composer-i:	##- Composer install
 	@ docker exec -it $(CONTAINER) composer install
 
+preset:		##- preset laravel
+	@ docker exec -it $(CONTAINER) cp .env.example .env && chmod -R 777 storage
+
 ##-
 ##-		-- QA Task Runners --
 ##-
