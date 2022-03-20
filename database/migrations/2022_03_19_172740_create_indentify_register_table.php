@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('indentify_register', function (Blueprint $table) {
+        Schema::create('indentify_registers', function (Blueprint $table) {
             $table->id();
-            $table->integer('indentify');
-            $table->dateTimeTz('created_at');
+            $table->bigInteger('indentify')->unique();
+            $table->integer('type');
+            $table->string('created_at', 150);
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('indentify_register');
+        Schema::dropIfExists('indentify_registers');
     }
 };
