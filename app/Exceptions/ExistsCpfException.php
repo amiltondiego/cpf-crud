@@ -19,6 +19,6 @@ class ExistsCpfException extends Exception implements ExceptionInterface
 
     public function status(): int
     {
-        return Response::HTTP_NOT_FOUND;
+        return Response::HTTP_BAD_REQUEST;
     }
 }

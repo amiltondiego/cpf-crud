@@ -10,6 +10,7 @@ use App\Services\CpfService;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use LogicException;
 
 class CpfController extends Controller
 {
@@ -42,19 +43,23 @@ class CpfController extends Controller
     public function destroy(string $cpf): JsonResponse
     {
         try {
-            $this->service->validateCpf($cpf)
-                ->findCPF($cpf);
+            $this->service->validateCpf($cpf);
+
+            $findRegister = $this->service->findCPF($cpf);
+            $findRegister->delete();
 
             return $this->response->json();
         } catch (ExceptionInterface $exception) {
             return $this->response->json($exception->context(), $exception->status());
+        } catch (LogicException $exception) {
+            return $this->response->json($exception->getMessage(), JsonResponse::HTTP_BAD_REQUEST);
         }
     }
 
     public function store(Request $request): JsonResponse
     {
         try {
-            $cpf = is_string($request->get('cpf')) ? strval($request->get('cpf')) : null;
+            $cpf = !is_null($request->get('cpf')) ? strval($request->get('cpf')) : null;
             $this->service->validateCpf($cpf)
                 ->existsCpfInDB($cpf);
 
@@ -62,7 +67,7 @@ class CpfController extends Controller
             $newRegister->indentify = intval($cpf);
             $newRegister->save();
 
-            return $this->response->json($newRegister->toArray());
+            return $this->response->json($newRegister->toArray(), JsonResponse::HTTP_CREATED);
         } catch (ExceptionInterface $exception) {
             return $this->response->json($exception->context(), $exception->status());
         }
