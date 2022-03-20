@@ -6,7 +6,7 @@ help:		##- Show this help.
 
 ##-
 
-CONTAINER = basic-docker
+CONTAINER = php-web
 PHPQA = docker run --init -it --user "$(shell id -u):$(shell id -g)" --rm -v "$(CURDIR)/:/var/www" -v "$(CURDIR)/tmp-phpqa:/tmp" -w /var/www jakzal/phpqa:php8.0-alpine
 
 ##-		-- Docker Commands --
@@ -22,7 +22,7 @@ stop: 		##- Stop Docker
 ##-		-- QA Task Runners --
 ##-
 test:		##- Run Tests with PHP Unit
-	@ docker exec -it $(CONTAINER) php -d xdebug.mode=coverage vendor/bin/phpunit -c phpunit.xml.dist --debug -vvv
+	@ docker exec -it $(CONTAINER) php -d xdebug.mode=coverage artisan test --debug -vvv
 
 stan:		##- Verify Code with PHPStan
 	@ mkdir -p $(CURDIR)/tmp-phpqa/ && chmod 775 $(CURDIR)/tmp-phpqa/
