@@ -18,6 +18,9 @@ start: 		##- Start Docker
 stop: 		##- Stop Docker
 	@ docker-compose down
 
+composer-i:	##- Composer install
+	@ docker exec -it $(CONTAINER) composer install
+
 ##-
 ##-		-- QA Task Runners --
 ##-
