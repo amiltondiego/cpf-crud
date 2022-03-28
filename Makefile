@@ -22,13 +22,15 @@ composer-i:	##- Composer install
 	@ docker exec -it $(CONTAINER) composer install
 
 preset:		##- preset laravel
-	@ docker exec -it $(CONTAINER) cp .env.example .env && chmod -R 777 storage
+	@ docker exec -it $(CONTAINER) cp .env.example .env && chmod -R 777 storage && chmod -R 777 bootstrap && php artisan migrate:refresh --seed
 
 ##-
 ##-		-- QA Task Runners --
 ##-
 test:		##- Run Tests with PHP Unit
-	@ docker exec -it $(CONTAINER) php -d xdebug.mode=coverage artisan test --debug -vvv
+	@ mkdir -p $(CURDIR)/tmp-phpqa/ && chmod 775 $(CURDIR)/tmp-phpqa/
+	@ mkdir -p $(CURDIR)/tmp-phpqa/coverage && chmod 775 $(CURDIR)/tmp-phpqa/coverage
+	@ docker exec -it $(CONTAINER) php artisan test --debug -vvv
 
 stan:		##- Verify Code with PHPStan
 	@ mkdir -p $(CURDIR)/tmp-phpqa/ && chmod 775 $(CURDIR)/tmp-phpqa/
